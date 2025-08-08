@@ -1,0 +1,16 @@
+apiVersion: networking.istio.io/v1
+kind: VirtualService
+metadata:
+  name: g38-cluster-vs
+  namespace: g38
+spec:
+  gateways:
+  - istio-system/devqa-istio-ingressgateway-inner
+  hosts:
+  - g38.svc.cluster.local
+  tcp:
+  - route:
+    - destination:
+        host: cluster.g38-dev.svc.cluster.local
+        port:
+          number: 6379
