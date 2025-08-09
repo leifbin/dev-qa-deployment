@@ -1,32 +1,32 @@
 apiVersion: networking.istio.io/v1beta1
 kind: Gateway
 metadata:
-  name: g38-cluster-gw
+  name: g38-ingest-gw
   namespace: g38-dev
 spec:
   selector:
     istio: ingressgateway
   servers:
   - port:
-      number: 2800
-      name: cluster-2800
+      number: 38000
+      name: ingest-38000
       protocol: TCP
     hosts:
-    - cluster.g38-dev.svc.cluster.local
+    - ingest.g38-dev.svc.cluster.local
 ---
 apiVersion: networking.istio.io/v1
 kind: VirtualService
 metadata:
-  name: g38-cluster-vs
+  name: g38-ingest-vs
   namespace: g38-dev
 spec:
   gateways:
   - istio-system/devqa-istio-ingressgateway-inner
   hosts:
-  - cluster.g38-dev.svc.cluster.local
+  - ingest.g38-dev.svc.cluster.local
   tcp:
   - route:
     - destination:
-        host: cluster.g38-dev.svc.cluster.local
+        host: ingest.g38-dev.svc.cluster.local
         port:
-          number: 6379
+          number: 9095
