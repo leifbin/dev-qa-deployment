@@ -1,0 +1,19 @@
+apiVersion: networking.istio.io/v1
+kind: VirtualService
+metadata:
+  name: g36-httpabackent-vs
+  namespace: g36-dev
+spec:
+  gateways:
+  - istio-system/devqa-istio-ingressgateway-inner
+  hosts:
+  - query.paryatest.com
+  http:
+  - route:
+    - destination:
+        host: httpabackent.g36-dev.svc.cluster.local
+        port:
+          number: 8080
+    match:
+    - uri:
+        prefix: /
