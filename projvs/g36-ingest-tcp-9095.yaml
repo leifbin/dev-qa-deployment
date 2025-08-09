@@ -1,0 +1,32 @@
+apiVersion: networking.istio.io/v1beta1
+kind: Gateway
+metadata:
+  name: g36-ingest-gw
+  namespace: g36-dev
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+  - port:
+      number: 2800
+      name: ingest-2800
+      protocol: TCP
+    hosts:
+    - ingest.g36-dev.svc.cluster.local
+---
+apiVersion: networking.istio.io/v1
+kind: VirtualService
+metadata:
+  name: g36-ingest-vs
+  namespace: g36-dev
+spec:
+  gateways:
+  - istio-system/devqa-istio-ingressgateway-inner
+  hosts:
+  - ingest.g36-dev.svc.cluster.local
+  tcp:
+  - route:
+    - destination:
+        host: ingest.g36-dev.svc.cluster.local
+        port:
+          number: 9095
